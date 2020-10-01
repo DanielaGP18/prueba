@@ -1,0 +1,68 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
+using System.Diagnostics;
+
+namespace Gateway.Clases
+{
+    class Logs
+    {
+
+        public static void gSendToLog(string msg)
+        {
+                try
+                {
+                
+                    string ruta_aplicacion = "C:\\acc-files\\GatewayEnvioSMSACC\\log\\";
+                    CreateDirectory();
+                    string nombre_log = ruta_aplicacion + DateTime.Today.ToString("yyyy-MM-dd") + ".log";
+
+                    if (!File.Exists(nombre_log))
+                    {
+                        string[] createText = { "Crea Log" };
+                        File.WriteAllLines(nombre_log, createText, Encoding.UTF8);
+                    }
+
+                    string appendText = "[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "] " + msg + Environment.NewLine;
+                    File.AppendAllText(nombre_log, appendText, Encoding.UTF8);
+
+                    string[] readText = File.ReadAllLines(nombre_log, Encoding.UTF8);
+                    foreach (string s in readText)
+                    {
+                        Console.WriteLine(s);
+                    }
+
+                }
+                catch (Exception)
+                {
+                   throw;
+                }
+        }
+
+        public static void CreateDirectory()
+       {
+           try
+           {
+               string ruta_aplicacion1 = @"C:";
+               string ruta_aplicacion2 = @"C:\acc-files";
+               string ruta_aplicacion3 = @"C:\acc-files\GatewayEnvioSMSACC";
+               string pathString1 = System.IO.Path.Combine(ruta_aplicacion1, "acc-files");
+               System.IO.Directory.CreateDirectory(pathString1);
+               string pathString2 = System.IO.Path.Combine(ruta_aplicacion2, "GatewayEnvioSMSACC");
+               System.IO.Directory.CreateDirectory(pathString2);
+               string pathString3 = System.IO.Path.Combine(ruta_aplicacion3, "log");
+               System.IO.Directory.CreateDirectory(pathString3);
+           }
+           catch (DirectoryNotFoundException) {
+               throw; 
+           }
+       }
+        }
+
+
+    
+}
